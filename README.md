@@ -4,4 +4,4 @@
   - also this is a swap between knc and zil
   - make sure you have a metamask wallet 
   - make sure you have knc in your wallet 
-
+  - run on ropsten
