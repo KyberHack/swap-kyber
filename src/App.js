@@ -11,6 +11,116 @@ const Web3 = require("web3");
 const Tx = require("ethereumjs-tx").Transaction;
 const BN = require("bignumber.js");
 
+const myContract =  [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "srcToken",
+				"type": "address"
+			},
+			{
+				"name": "srcQty",
+				"type": "uint256"
+			},
+			{
+				"name": "destToken",
+				"type": "address"
+			},
+			{
+				"name": "destAddress",
+				"type": "address"
+			},
+			{
+				"name": "maxDestAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "executeSwap",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_kyberNetworkProxyContract",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "srcToken",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "destToken",
+				"type": "address"
+			}
+		],
+		"name": "Swap",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "srcToken",
+				"type": "address"
+			},
+			{
+				"name": "srcQty",
+				"type": "uint256"
+			},
+			{
+				"name": "destToken",
+				"type": "address"
+			}
+		],
+		"name": "getConversionRates",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "kyberNetworkProxyContract",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
 // Connecting to ropsten infura node
 const PROJECT_ID = "e4d24ff74a94463c8c8bffe74114c69b" //Replace this with your own Project ID
 var WS_PROVIDER;
@@ -57,7 +167,7 @@ async function main() {
   // Check KyberNetworkProxy contract allowance
   console.log('U')
   let contractAllowance = await SRC_TOKEN_CONTRACT.methods
-    .allowance(USER_ADDRESS, KYBER_NETWORK_PROXY_ADDRESS)
+    .allowance(USER_ADDRESS, '0xD18685ADaF392A6bD98a8A89B9f2887ece9Cc88D')
     .call();
     console.log("contract allowance", contractAllowance)
   // If insufficient allowance, approve else convert KNC to ETH.
@@ -67,7 +177,7 @@ async function main() {
       SRC_TOKEN_ADDRESS,
       SRC_QTY_WEI,
       DST_TOKEN_ADDRESS,
-      '0x0acb691fF5530040C5cBf275623e7641058B5Ccb',
+      USER_ADDRESS,
       MAX_ALLOWANCE,
       results.slippageRate,
       REF_ADDRESS
@@ -163,7 +273,7 @@ async function broadcastTx(from, to, txData, value, gasLimit) {
   // console.log('serialisedtx',serializedTx)
   // let txReceipt = await web3.eth.sendTransaction('0x' + serializedTx.toString('hex'))
   // .catch(error => console.log(error));
-  web3.eth.sendTransaction(rawTx,() =>{
+  let txReceipt =  web3.eth.sendTransaction(rawTx,() =>{
     console.log('suucess')
   }).catch(error => console.log(error))
   // Log the tx receipt
@@ -174,7 +284,7 @@ async function broadcastTx(from, to, txData, value, gasLimit) {
 async function approveContract(allowance) {
   console.log("Approving KNP contract to manage my KNC");
   let txData = await SRC_TOKEN_CONTRACT.methods
-    .approve(KYBER_NETWORK_PROXY_ADDRESS, allowance)
+    .approve('0xD18685ADaF392A6bD98a8A89B9f2887ece9Cc88D', allowance)
     .encodeABI();
   console.log('tx data',txData, USER_ADDRESS)
   
