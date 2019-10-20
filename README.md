@@ -5,3 +5,4 @@
   - make sure you have a metamask wallet 
   - make sure you have knc in your wallet 
   - run on ropsten
+  -  smart  contract working , deployed on ropsten
