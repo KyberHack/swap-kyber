@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-// DISCLAIMER: Code snippets in this guide are just examples and you
-// should always do your own testing. If you have questions, visit our
-// https://t.me/KyberDeveloper.
 
 // Importing the relevant packages
 const Web3 = require("web3");
