@@ -146,7 +146,7 @@ const SRC_QTY_WEI = (SRC_QTY * 10 ** SRC_DECIMALS).toString();
 const GAS_LIMIT = '500000';
 
 // User Details
-const PRIVATE_KEY = Buffer.from("4AB80464E14C1EF9F1459EBD5C85ACBC195AADDF8958A8F91DCFD9087C71F5F1", "hex"); //exclude 0x prefix
+
 var USER_ADDRESS = '0xBE4dD6Bae372CBA479176297b67D0D42447aFAE6'
 
 // Wallet Address for Fee Sharing Program
